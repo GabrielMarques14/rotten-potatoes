@@ -7,10 +7,11 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  CI:
     runs-on: ubuntu-latest
 
     steps:
+      # checkout the code
       - uses: actions/checkout@v3
 
       - name: Docker Login
@@ -28,3 +29,18 @@ jobs:
           tags: |
             gabrielxiv/rotten-tomatoes:latest
             gabrielxiv/rotten-tomatoes:${{ github.run_number }}
+
+  CD:
+    runs-on: ubuntu-latest
+
+    steps:
+      # checkout the code
+      - uses: actions/checkout@v3
+      
+      - name: Kubernetes Set Context
+        uses: Azure/k8s-set-context@v2
+        with:
+          method: kubeconfig
+          kubeconfig: ${{ secrets.K8S_KUBECONFIG }}
+
+      
