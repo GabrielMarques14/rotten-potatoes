@@ -2,7 +2,7 @@ name: CI-CD
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
 
   workflow_dispatch:
 
@@ -17,8 +17,8 @@ jobs:
       - name: Docker Login
         uses: docker/login-action@v1.14.1
         with:
-          username: ${{ secrets.DOCKERHUB_USER }}
-          password: ${{ secrets.DOCKERHUB_PWD }}
+          username: ${{secrets.DOCKERHUB_USER}}
+          password: ${{secrets.DOCKERHUB_PWD}}
 
       - name: Docker Build And Push
         uses: docker/build-push-action@v2.7.0
@@ -27,8 +27,8 @@ jobs:
           file: ./src/Dockerfile
           push: true
           tags: |
-            gabrielxiv/rotten-tomatoes:latest
-            gabrielxiv/rotten-tomatoes:${{ github.run_number }}
+            gabrielxiv/rotten-potatoes:latest
+            gabrielxiv/rotten-potatoes:${{github.run_number}}
 
   CD:
     needs: [CI]
@@ -37,7 +37,7 @@ jobs:
     steps:
       # checkout the code
       - uses: actions/checkout@v3
-      
+
       - name: Kubernetes Set Context
         uses: Azure/k8s-set-context@v2
         with:
@@ -47,6 +47,6 @@ jobs:
       - name: Deploy to Kubernetes cluster
         uses: Azure/k8s-deploy@v3.0
         with:
-          images: gabrielxiv/rotten-tomatoes:${{ github.run_number }}
+          images: gabrielxiv/rotten-potatoes:${{github.run_number}}
           manifests: |
             k8s/deployment.yaml
