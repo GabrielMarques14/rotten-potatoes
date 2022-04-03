@@ -25,6 +25,6 @@ jobs:
           context: ./src
           file: ./src/Dockerfile
           push: true
-          tags:
+          tags: |
             gabrielxiv/rotten-tomatoes:latest
             gabrielxiv/rotten-tomatoes:${{ github.run_number }}
